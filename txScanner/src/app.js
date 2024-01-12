@@ -11,6 +11,13 @@ const headers = {
     'Authorization': 'Basic ' + Buffer.from(`${rpcUser}:${rpcPass}`).toString('base64')
 };
 
+// Additional option to accept self-signed certificates
+const axiosOptions = {
+    httpsAgent: new https.Agent({
+        rejectUnauthorized: false
+    })
+};
+
 // 生成 CSV 文件头部
 let csvContent = 'order,txsvalid,transactionHash,transactionType,timestamp\n';
 
@@ -24,7 +31,7 @@ async function getBlockData(blockID) {
     };
 
     try {
-        const response = await axios.post('https://127.0.0.1:18131', requestData, { headers });
+        const response = await axios.post('https://127.0.0.1:18131', requestData, { headers, ...axiosOptions });
         const blockData = response.data.result;
 
         const { order, txsvalid, transactions, timestamp } = blockData;
