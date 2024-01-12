@@ -38,11 +38,11 @@ async function getBlockData(blockID) {
         const { order, txsvalid, transactions, timestamp } = blockData;
 
         transactions.forEach(transaction => {
-            const { hash, type } = transaction;
+            const { txhash, type } = transaction;
 
             // 过滤掉 TxTypeCoinbase 类型的交易
             if (type !== 'TxTypeCoinbase') {
-                const row = `${order},${txsvalid},"${hash}","${type}","${timestamp}"\n`;
+                const row = `${order},${txsvalid},"${txhash}","${type}","${timestamp}"\n`;
                 // 追加到 CSV 文件
                 fs.appendFile('block_data_all.csv', row, (err) => {
                     if (err) {
