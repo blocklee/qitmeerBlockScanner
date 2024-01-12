@@ -1,5 +1,6 @@
 const axios = require('axios');
 const fs = require('fs');
+const https = require('https');
 
 // 设置RPC用户名和密码
 const rpcUser = 'qitmeer';
