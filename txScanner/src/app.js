@@ -18,13 +18,13 @@ let csvContent = 'order,txsvalid,transactionHash,transactionType,timestamp\n';
 async function getBlockData(blockID) {
     const requestData = {
         method: 'getBlockByID',
-        params: [blockID, true, true, false],
+        params: [blockID, true, true, true],
         jsonrpc: '2.0',
         id: 1
     };
 
     try {
-        const response = await axios.post('http://127.0.0.1:18131', requestData, { headers });
+        const response = await axios.post('https://127.0.0.1:18131', requestData, { headers });
         const blockData = response.data.result;
 
         const { order, txsvalid, transactions, timestamp } = blockData;
