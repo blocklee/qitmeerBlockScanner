@@ -31,7 +31,11 @@ async function getBlockData(blockID) {
 
         transactions.forEach(transaction => {
             const { hash, type } = transaction;
-            csvContent += `${order},${txsvalid},"${hash}","${type}","${timestamp}"\n`;
+
+            // 过滤掉 TxTypeCoinbase 类型的交易
+            if (type !== 'TxTypeCoinbase') {
+                csvContent += `${order},${txsvalid},"${hash}","${type}","${timestamp}"\n`;
+            }
         });
     } catch (error) {
         console.error(`请求失败 (${blockID}):`, error.message);
@@ -39,8 +43,8 @@ async function getBlockData(blockID) {
 }
 
 // 定义获取区块数据的起始和结束块号
-const startBlockID = 2;
-const endBlockID = 10;
+const startBlockID = 1459477;
+const endBlockID = 2636288;
 
 // 循环获取区块数据
 for (let blockID = startBlockID; blockID <= endBlockID; blockID++) {
