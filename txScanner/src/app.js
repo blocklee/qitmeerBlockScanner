@@ -34,7 +34,13 @@ async function getBlockData(blockID) {
 
             // 过滤掉 TxTypeCoinbase 类型的交易
             if (type !== 'TxTypeCoinbase') {
-                csvContent += `${order},${txsvalid},"${hash}","${type}","${timestamp}"\n`;
+                const row = `${order},${txsvalid},"${hash}","${type}","${timestamp}"\n`;
+                // 追加到 CSV 文件
+                fs.appendFile('block_data_all.csv', row, (err) => {
+                    if (err) {
+                        console.error(`保存 CSV 文件失败 (${blockID}):`, err);
+                    }
+                });
             }
         });
     } catch (error) {
@@ -47,18 +53,13 @@ const startBlockID = 1459477;
 const endBlockID = 2636288;
 
 // 循环获取区块数据
-for (let blockID = startBlockID; blockID <= endBlockID; blockID++) {
-    await getBlockData(blockID);
+async function start() {
+    for (let blockID = startBlockID; blockID <= endBlockID; blockID++) {
+        await getBlockData(blockID);
+    }
 }
 
-// 指定保存的文件路径
-const filePath = 'block_data_all.csv';
-
-// 写入 CSV 文件
-fs.writeFile(filePath, csvContent, (err) => {
-    if (err) {
-        console.error('保存 CSV 文件失败:', err);
-    } else {
-        console.log('CSV 文件保存成功:', filePath);
-    }
+// 启动程序
+start().then(() => {
+    console.log('数据获取完成');
 });
