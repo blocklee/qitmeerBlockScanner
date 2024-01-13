@@ -70,4 +70,5 @@ async function start() {
 // 启动程序
 start().then(() => {
     console.log('数据获取完成');
+    process.exit(); // 获取完数据后自动停止程序
 });
